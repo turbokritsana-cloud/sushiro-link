@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Open Sushiro</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <p>กำลังเปิดแอป Sushiro… ถ้าไม่เกิดอะไรขึ้น คุณจะถูกพาไปยังหน้าดาวน์โหลด</p>
+
+<script>
+(function(){
+  const deep = "sushiroapp://app_start_only";
+  const iosStore = "https://apps.apple.com/th/app/id1506722254";
+  const androidStore = "https://play.google.com/store/apps/details?id=th.co.akindo_sushiro.sushiroapp";
+
+  const ua = navigator.userAgent || "";
+  const isAndroid = /Android/i.test(ua);
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+  function openDeep() {
+    // พยายามเปิดแอป
+    window.location = deep;
+
+    // fallback
+    setTimeout(function(){
+      if (isIOS) {
+        window.location = iosStore;
+      } else if (isAndroid) {
+        // Android ลอง intent:// ก่อน
+        window.location = "intent://#Intent;scheme=sushiroapp;package=th.co.akindo_sushiro.sushiroapp;end;";
+        setTimeout(function(){ window.location = androidStore; }, 1000);
+      } else {
+        // desktop → ไป App Store
+        window.location = iosStore;
+      }
+    }, 800);
+  }
+
+  openDeep();
+})();
+</script>
+</body>
+</html>
